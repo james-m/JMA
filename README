@@ -5,4 +5,9 @@ JUST MESSING AROUND
 * 2010.05.12 - Downloaded Django 1.2 RC1 and restarted tutorial
 * 2010.05.19 - Fully Django 1.2 and finished out tutorial. Skipped generic views (blek)
 
-
+* 2010.05.26 - Starting work on doing multiple database support continuation
+               of the Django tutorial. This is gonna be the most scalable polling system 
+               EV-AR.
+* 2010.06.12 - Bit of work on in the djtut-scale branch... learned a lot about how one might
+               implement sharding in real world Django. Enough to know that it will pretty
+               much break the out-of-the-box admin tools. blek.

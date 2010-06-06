@@ -9,16 +9,40 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+DB_SHARD_NONE  = 0x0
+DB_SHARD_POLLS = 0x1
+DB_INFO = [
+	('test0', DB_SHARD_POLLS),
+	('test1', DB_SHARD_POLLS),
+	('test2', DB_SHARD_POLLS),
+	('test3', DB_SHARD_POLLS),
+	]
+DB_BASE = {
+	'ENGINE': 'django.db.backends.mysql',
+	'USER': 'test',
+	'PASSWORD': '',
+	'HOST': 'localhost',
+	'PORT': '3306',
+	}
+
 DATABASES = {
 	'default': {
-		'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-		'NAME': 'test',						 # Or path to database file if using sqlite3.
-		'USER': '',						 # Not used with sqlite3.
-		'PASSWORD': '',					 # Not used with sqlite3.
-		'HOST': 'localhost',					  # Set to empty string for localhost. Not used with sqlite3.
-		'PORT': '3306',						 # Set to empty string for default. Not used with sqlite3.
-	}
+		'ENGINE': 'django.db.backends.mysql',
+		'NAME': 'test',
+		'USER': '',
+		'PASSWORD': '',
+		'HOST': 'localhost',
+		'PORT': '3306',
+	},
 }
+
+for name, shard_info in DB_INFO:
+	local = DB_BASE.copy() # only need a shallow copy
+	local['NAME'] = name
+	DATABASES.setdefault(name,{}).update(local)
+	del(local)
+
+DATABASE_ROUTERS = ['mysite.routers.PollsRouter']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

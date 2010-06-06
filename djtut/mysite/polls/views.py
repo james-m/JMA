@@ -9,8 +9,17 @@ from django.template          import RequestContext
 
 from mysite.polls.models import Poll, Choice
 
+from mysite      import dbconf
+from django.conf import settings
+
 def index(request):
-	latest_poll_list = Poll.objects.all().order_by('-pub_date')[:5]
+	latest_poll_list = []
+	for shard in dbconf.get_shards(settings.DB_SHARD_POLLS):
+		q = Poll.objects.get_query_set()
+
+		latest_poll_list.extend(
+			q.using(shard).order_by('-pub_date')[:5]
+		)
 	return render_to_response(
 		'polls/index.html', {'latest_poll_list' : latest_poll_list})
 	
